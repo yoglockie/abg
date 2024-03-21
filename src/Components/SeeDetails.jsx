@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import html2canvas from 'html2canvas';
-import { BlobServiceClient } from '@azure/storage-blob';
-import { Buffer } from "buffer";
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SeeDetails = () => {
 
     const [inputImageBuffer, setInputImageBuffer] = useState(null);
     const [outputImageBuffer, setOutputImageBuffer] = useState(null);
-
+    const navigate = useNavigate();
     const location = useLocation()
     const propsdata = location.state
-    const sastoken = "sp=r&st=2024-03-07T07:32:17Z&se=2024-03-15T15:32:17Z&sv=2022-11-02&sr=c&sig=X9x8aK6jP3wTaAKQk5ow9a1%2BdlxeUjZEwD2KemhA8S4%3D"
+    const sastoken = "sp=r&st=2024-03-19T05:00:43Z&se=2025-03-30T13:00:43Z&sv=2022-11-02&sr=c&sig=tZU7EQ5OD7Umaqylzh3cR%2BHWx3lJruBBpVbbUKX4A34%3D"
     
-    const ibf = null;
-    const obf = null;
     
 
 
@@ -29,11 +26,10 @@ const SeeDetails = () => {
           }
       
           const imageBuffer = await response.arrayBuffer();
-         // return Buffer.from(imageBuffer);
+         
          
          const uint8Array = new Uint8Array(imageBuffer); 
-        //  const data = uint8Array.reduce((acc, i) => acc += String.fromCharCode.apply(null, [i]), '');
-        //  return data;
+        
         const blob = new Blob([uint8Array], { type: 'image/png' });
 
         return new Promise((resolve) => {
@@ -97,24 +93,29 @@ const SeeDetails = () => {
         link.download = 'layout_snapshot.png';
         link.click();
       });
-        
-       
-    
-    
-        
+                
       };  
-     
-      function encode(inputArray) {
-        if(!inputArray)
-        {
-          return ''
-        }
-        let binary = '';
-        inputArray.forEach(byte => binary += String.fromCharCode(byte));
-        return btoa(binary);
-      }
+      
+      const deleteRecord =async()=>{
+           const response = await axios.post('https://mandelbulbtech.in/delete',{
+            inputblob:propsdata.iimg
+           })
+           const data = response.data;
+           console.log(data);
+           console.log(propsdata.iimg);
+           navigate('/previous');
+      } 
+      
+      
   return (
-    <div>
+    <div className='sd-root'>
+         <header className="header">
+          <div className="s-nav">
+            <img src="https://companieslogo.com/img/orig/GRASIM.NS_BIG-12105e87.png?t=1603311859" alt="logo" style={{width:"30px",height:"30px"}}/>
+            Aditya Birla Grasim
+          </div>
+          
+         </header>
         <div className="slower-body">
              <div className="s-container">
              <span>Input Image</span>
@@ -156,8 +157,8 @@ const SeeDetails = () => {
                            </div>
                            <div className='el' style={{color:"#43C343"}}>
                              <div><p>Lab Result</p></div>
-                             <div><p>{propsdata.labresult}</p></div>
-                             <div><p>----</p> </div>
+                             <div><p>----</p></div>
+                             <div><p>{propsdata.labresult}</p> </div>
                            </div>
                            <div className='el' style={{color:"#43C343"}}>
                              <p>M/MM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -188,7 +189,7 @@ const SeeDetails = () => {
         <button
             className="btn"
         >
-        Go to Home Page
+        Home Page
         </button>
         </Link>
         <button
@@ -202,70 +203,20 @@ const SeeDetails = () => {
             className="btn"
             
         >
-        Go to Previous Results
+        Previous Results
         </button>
         </Link>
+        
+        <button
+            className="btn"
+            onClick={deleteRecord}
+        >
+        Delete Record
+        </button>
         
         </div>
     </div>
   )
 }
 
-export default SeeDetails
-
-
-
-
-
-
-
-// useEffect(() => {
-        
-    //     const fetchBlobImage = async (iimg,oimg) => {
-            
-    //         const connectionString = 'DefaultEndpointsProtocol=https;AccountName=stgaml;AccountKey=L1f+bbD7bdSOok5rkAvWSY3U7JwPftIVv2gQQlU+zyVGjqTH23nrZR/q5hKE5F/96/274LDTq4yE+AStu6CKAQ==;EndpointSuffix=core.windows.net';
-
-    //         const containerName = 'images';
-            
-            
-            
-            
-    //         const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-          
-            
-    //         const containerClient = blobServiceClient.getContainerClient(containerName);
-          
-           
-    //         const blobClient1 = containerClient.getBlobClient(iimg);
-    //         const blobClient2 = containerClient.getBlobClient(oimg);
-          
-    //         try {
-             
-    //           const response1 = await blobClient1.download();
-    //           const response2 = await blobClient2.download();
-          
-    //           if (response1.readableStreamBody) {
-                
-    //             const blobDataUrl1 = URL.createObjectURL(await response1.readableStreamBody.getReader().read());
-    //             console.log(blobDataUrl1);
-    //           }
-    //           if (response2.readableStreamBody) {
-    //             const blobDataUrl2 = URL.createObjectURL(await response2.readableStreamBody.getReader().read());
-    //             console.log(blobDataUrl2);
-    //           }
-    //         } catch (error) {
-    //           console.error('Error fetching blob image:', error);
-    //         }
-    //       };
-
-
-    //     fetchBlobImage(propsdata.iimg,propsdata.oimg);
-    //   }, []);
-
-
-
-
-
-
-
-    
+export default SeeDetails    

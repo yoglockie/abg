@@ -40,9 +40,15 @@ code {
 }
 
 .datetimemm p {
+   width: 100%;
     font-size: 15px;
     font-weight: 600;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
+
+
 
 input[type="file"]::file-selector-button {
   
@@ -123,6 +129,7 @@ input[type="time"]:focus{
 }
 .header{
   height: 8vh;
+  width: 100vw;
   background-color: white;
   box-shadow: 2px 2px 2px gray;
   display: flex;
@@ -130,6 +137,22 @@ input[type="time"]:focus{
   align-items: center;
   padding: 20px;
   padding-left: 30px;
+  position: fixed;
+  
+}
+
+.headers{
+  height: 8vh;
+  width: 100vw;
+  background-color: white;
+  box-shadow: 2px 2px 2px gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  padding-left: 30px;
+  
+  
 }
 
 .s-nav{
@@ -155,6 +178,7 @@ input[type="time"]:focus{
    justify-content: space-between;
    align-items: center;
    flex-wrap: wrap;
+   
 }
 
 
@@ -213,7 +237,7 @@ input[type="time"]:focus{
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   margin-bottom: 20px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .ele{
@@ -337,6 +361,7 @@ input[type="time"]:focus{
    
 }
 
+
 /* Previous Page */
 
 .root-pre{
@@ -345,8 +370,9 @@ input[type="time"]:focus{
   justify-content: space-between;
   align-items: center;
   padding: 50px;
-  padding-top: 10px;
+  padding-top: 10vh;
   padding-bottom: 10px;
+  
 }
 
 .p-header{
@@ -384,7 +410,7 @@ input[type="time"]:focus{
 .content-table thead tr{
   background-color: #009879;
   color: #ffffff;
-  text-align: left;
+  text-align: center;
 }
 
 .content-table th, .content-table td{
@@ -396,13 +422,47 @@ input[type="time"]:focus{
   overflow-y: scroll;
 }
 .content-table tbody tr{
-  text-align: left;
+  text-align: center;
    border-bottom: 1px solid lightgray;
 }
 
 .content-table tbody tr:last-of-type{
      border-bottom: 2px solid #009879;
 }
+
+
+.datepopup{
+   height: 200px;
+   width: 300px;
+   background-color: white;
+   border-radius: 10px;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   margin: 10px;
+   align-self: flex-end;
+   
+}
+
+
+.outer-popup{
+  position: fixed;
+  right: 50px;
+  top: 17vh;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 /* see detail */
@@ -416,6 +476,7 @@ input[type="time"]:focus{
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  padding-top: 10vh;
 }
 
 .s-container{
@@ -431,7 +492,7 @@ input[type="time"]:focus{
 }
 
 .s-container img{
-  height: 45vh;
+  height: 100%;
   width: 27vw;
   border: 8px solid #F3F4F6;
   border-radius: 15px;
@@ -451,10 +512,8 @@ input[type="time"]:focus{
 
 
 .soutput-percentage{
-  height: auto;
-  min-height: 45vh;
-  
-  width: 24vw;
+  height: 100%;
+  width: 27vw;
   background-color: #F3F4F6;
   padding: 20px;
   border-radius: 15px;
@@ -476,6 +535,7 @@ input[type="time"]:focus{
    justify-content: center;
    width: 100%;
 }
+
 
 
 @media (max-width: 850px){
