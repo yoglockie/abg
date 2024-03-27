@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext/AuthContext';
 import { saveAs } from 'file-saver';
-const Previous = () => {
-  const navigate = useNavigate(); 
+
+const PreviousWithoutLogin = () => {
+  
+  const navigate = useNavigate();
   const [dataSet, setData] = useState([]);
   const [showPopup,setShowPopup]=useState(false);
   const [fromDate,setFromDate]=useState("");
   const [toDate,setToDate]=useState("");
   const [visibleRows,setVisibleRows]=useState(0);
 
-  const {user,userid,logout} = useAuth();
- 
   useEffect(() => {
     const fetchData = async () => {
       try {
         
-           const response = await axios.post('https://mandelbulbtech.in/kql',{user:user, userid:userid,from:null,to:null});
+           const response = await axios.post('https://mandelbulbtech.in/kql',{user:"none",userid:0,from:null,to:null});
            const data = response.data;
             //console.log(data);
             //console.log(data.Tables);
@@ -25,7 +24,7 @@ const Previous = () => {
            setData(data.Tables[0].Rows)
            console.log(data.Tables[0].Rows);
            setVisibleRows(Math.min(5, data.Tables[0].Rows.length));
-           
+         
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -62,7 +61,7 @@ const Previous = () => {
       var newDateStr = inputDate.toISOString().split('T')[0];
       console.log("new to date ",newDateStr);
       
-      const response = await axios.post("https://mandelbulbtech.in/kql",{user:user, userid:userid,from:fromDate,to:newDateStr}) 
+      const response = await axios.post("https://mandelbulbtech.in/kql",{user:"none",userid:0,from:fromDate,to:newDateStr}) 
       const data = response.data
       // console.log(data);
       setData(data.Tables[0].Rows)
@@ -70,12 +69,6 @@ const Previous = () => {
       
       setFromDate("");
       setToDate("");
-  }
-  
-  const handleLogout=()=>{
-    // sessionStorage.removeItem('token');
-    logout();
-    navigate('/');
   }
   
   const arrayToCSV = (array,headers) => {
@@ -115,11 +108,11 @@ const Previous = () => {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
     saveAs(blob, 'Previous_Records.csv');
   };
-
+  
   const homeLink =()=>{
     navigate('/home');
   }
-  
+   
   const loadMoreRows = () => {
     setVisibleRows(prevVisibleRows => {
       const nextVisibleRows = prevVisibleRows + 10;
@@ -134,14 +127,14 @@ const Previous = () => {
             <img src="https://companieslogo.com/img/orig/GRASIM.NS_BIG-12105e87.png?t=1603311859" alt="logo" style={{width:"30px",height:"30px"}}/>
             Aditya Birla Grasim
           </div>
-          <button className='login-btn' onClick={handleLogout}>Logout</button>
+          
       </header>
       <div className='root-pre'>
        <div className='p-header'>
         
         <p>Previous Results</p>
         <div style={{display:"flex"}}>       
-        <Link to="/home"><button className="btn btnd">Home</button></Link>
+        <Link to="/"><button className="btn btnd">Login</button></Link>
         <button className="btn btnd" onClick={handleCSVDownload}>Download CSV</button>
         <button className="btn btnd" onClick={()=>{window.location.reload()}}>Refresh</button>
         <button className="btn btnd" onClick={()=>{setShowPopup(true)}}>Search By Date</button>
@@ -162,7 +155,7 @@ const Previous = () => {
        <table className='content-table'>
          <thead>
              <tr>
-                <th>User Name</th>
+                <th>User</th>
                 <th>File Name</th>
                 <th>Current Date</th>
                 <th>From Date</th>
@@ -188,7 +181,7 @@ const Previous = () => {
               <td>{rowData[4]}</td>
               
               <td>{rowData[5]}</td>
-              <td>{rowData[8]!=null?rowData[8]+`%`:'--'}</td>
+              <td>{rowData[8]}%</td>
               {/* <td>{rowData[8]}</td> */}
               <td>{((rowData[11]/rowData[9])*100).toFixed(1)}%</td>
               <td>{((rowData[10]/rowData[9])*100).toFixed(1)}%</td>
@@ -196,7 +189,7 @@ const Previous = () => {
               <td>{((rowData[13]/rowData[9])*100).toFixed(1)}%</td>
               <td>
               <Link 
-                to="/seedetails" 
+                to="/seedetailswl" 
                 state={
                   {
                     id:rowData[0],
@@ -226,8 +219,12 @@ const Previous = () => {
           <p style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }} onClick={loadMoreRows}>Load more</p>
         }
     </div>
+    
      </div>
   )
 }
 
-export default Previous
+export default PreviousWithoutLogin
+
+
+

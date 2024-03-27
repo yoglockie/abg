@@ -3,11 +3,9 @@ import { useLocation, Link } from 'react-router-dom'
 import html2canvas from 'html2canvas';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext/AuthContext';
 
-const SeeDetails = () => {
-    
-    const {user,userid,logout} = useAuth();
+const SeeDetailsWithoutLogin = () => {
+
     const [inputImageBuffer, setInputImageBuffer] = useState(null);
     const [outputImageBuffer, setOutputImageBuffer] = useState(null);
     const navigate = useNavigate();
@@ -16,7 +14,7 @@ const SeeDetails = () => {
     const sastoken = "sp=r&st=2024-03-19T05:00:43Z&se=2025-03-30T13:00:43Z&sv=2022-11-02&sr=c&sig=tZU7EQ5OD7Umaqylzh3cR%2BHWx3lJruBBpVbbUKX4A34%3D"
     
     
-    
+
 
     // making api request 
     const convertUrlToBuffer = async (imageUrl) => {
@@ -98,33 +96,21 @@ const SeeDetails = () => {
                 
       };  
       
-      const deleteRecord =async()=>{
-           const response = await axios.post('https://mandelbulbtech.in/delete',{
-            user:user, userid:userid, inputblob:propsdata.iimg
-           })
-           const data = response.data;
-           console.log(data);
-           console.log(propsdata.iimg);
-           navigate('/previous');
-      } 
-      const handleLogout=()=>{
-        // sessionStorage.removeItem('token');
-        logout();
-        navigate('/');
-      }
       const homeLink =()=>{
         navigate('/home');
-      }
+    }
+      
+      
+      
   return (
     <div className='sd-root'>
          <header className="header">
           <div className="s-nav" onClick={homeLink}>
-            <img src="https://companieslogo.com/img/orig/GRASIM.NS_BIG-12105e87.png?t=1603311859" alt="logo" style={{width:"30px", height:"30px"}}/>
+            <img src="https://companieslogo.com/img/orig/GRASIM.NS_BIG-12105e87.png?t=1603311859" alt="logo" style={{width:"30px",height:"30px"}}/>
             Aditya Birla Grasim
           </div>
-          <button className='login-btn' onClick={handleLogout}>Logout</button>
-         </header>
           
+         </header>
         <div className="slower-body">
              <div className="s-container">
              <span>Input Image</span>
@@ -194,20 +180,20 @@ const SeeDetails = () => {
              </div>
         </div>
         <div className='dbtn'>
-        <Link to='/home'>
+        {/* <Link to='/'>
         <button
             className="btn"
         >
-        Home Page
+        Login
         </button>
-        </Link>
+        </Link> */}
         <button
             className="btn"
             onClick={downloadFile}
         >
          Download Result
         </button>
-        <Link to='/previous'>
+        <Link to='/previouswl'>
         <button
             className="btn"
             
@@ -216,16 +202,11 @@ const SeeDetails = () => {
         </button>
         </Link>
         
-        <button
-            className="btn"
-            onClick={deleteRecord}
-        >
-        Delete Record
-        </button>
+        
         
         </div>
     </div>
   )
 }
 
-export default SeeDetails    
+export default SeeDetailsWithoutLogin  
